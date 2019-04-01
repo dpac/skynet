@@ -1,0 +1,5 @@
+[bigips]
+lbstest host=192.168.92.150
+[bigips:vars]
+ansible_python_interpreter=/usr/bin/python3.6
+
