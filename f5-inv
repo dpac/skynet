@@ -1,5 +1,7 @@
 [bigips]
 lbstest host=192.168.92.150
-[bigips:vars]
+[all:vars]
 ansible_python_interpreter=/usr/bin/python3.6
-
+[webservers]
+host1 ansible_host=10.30.30.10
+host2 ansible_host=10.30.30.11
