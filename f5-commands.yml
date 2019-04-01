@@ -1,0 +1,18 @@
+---
+- name: Check F5 version
+  hosts: bigips
+  connection: local
+  tasks:
+    - bigip_command:
+        commands: 
+           - modify ltm pool web { members delete { 192.168.175.130:http } }  
+           - delete ltm node 192.168.175.130
+           - show running-config ltm node one-line 
+        server: 192.168.92.150
+        password: Cisco@123
+        user: admin
+        validate_certs: no
+      register: show_run
+    - copy:
+       content: "{{show_run.stdout[0] }}"
+       dest: "CFGS/{{inventory_hostname}}.txt"

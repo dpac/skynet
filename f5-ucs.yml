@@ -1,0 +1,13 @@
+---
+- name: Fetch UCS 
+  hosts: bigips
+  connection: local 
+  tasks:    
+   - bigip_ucs_fetch:
+      src: "{{inventory_hostname}}.ucs"
+      dest: "/home/admin/Ansible/F5/CFGS/{{inventory_hostname}}.ucs"
+      validate_certs: no
+      provider:
+       server: 192.168.92.150
+       user: admin
+       password: Cisco@123
