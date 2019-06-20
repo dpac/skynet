@@ -1,0 +1,58 @@
+from f5.bigip import ManagementRoot
+import re, requests, json
+from pprint import pprint as pp
+# get auth token
+def get_token(bigip, url, username, password):
+    payload = {}
+    payload['username'] = username
+    payload['password'] = password
+    payload['loginProviderName'] = 'tmos'
+    token = bigip.post(url, json.dumps(payload)).json()
+    return token
+
+# send tmsh command (via bash)
+def send_tmsh_command(bigip,hostname, command):
+    payload = {}
+    cmd = "-c \'" + command + "\'"
+    payload['command'] = 'run'
+    payload['utilCmdArgs'] = cmd
+
+    URL = 'https://%s/mgmt/tm/util/bash' % hostname
+    result = bigip.post(URL, data=json.dumps(payload))
+
+    if result.status_code is not 200:
+         print(result.content)
+    else:
+        print("ok")
+
+def main():
+    requests.packages.urllib3.disable_warnings()
+    hostname = "f5_lab.local"    # enter your IP here
+    username = "admin"   # enter your username here
+    password = "Cisco@123"   # enter your password here
+
+    # define base urls for rest
+    url = 'https://%s/mgmt' % hostname
+    url_auth = '%s/shared/authn/login' % url
+
+    # init session
+    bigip = requests.session()
+    bigip.headers.update({'Content-Type': 'application/json'})
+    bigip.auth = (username, password)
+    bigip.verify = False
+
+    #receive login auth token
+    token = get_token(bigip, url_auth, username, password)
+    token1 = token['token']
+    bigip.auth = None
+    token1 = token1['token']
+    # update session header
+    bigip.headers.update({'X-F5-Auth-Token': token1})
+
+    # execute tmsh commands from given textfile
+    tmsh_commandlist = open("tmsh_commandlist.txt")
+    for line in iter(tmsh_commandlist):
+        line = re.sub(r"\"", "\\\"", line, flags=re.S)
+        send_tmsh_command(bigip, hostname, line)
+
+main()
