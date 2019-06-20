@@ -1,0 +1,1 @@
+for x in `cat FWLNNS201_20190614_Objects.txt`;do grep $x FWLEKS201_20190614_Objects.txt >/dev/null;if [ $? -ne 0 ];then echo $x;fi;done > difference
