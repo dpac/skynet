@@ -1,0 +1,26 @@
+---
+
+- name: Save running config to file (IOS)
+  hosts: iosxr
+  gather_facts: no
+  connection: network_cli
+  #vars_prompt:
+  # - name: "user"
+   #  prompt: "Please enter your username:"
+   #- name: "password"
+    # prompt: "Please enter your password:"
+  vars:
+    creds:
+        host: "{{ host }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
+
+  tasks:
+    - iosxr_command:
+        provider: "{{ creds }}"
+        commands: show running-config
+      register: show_run
+
+    - copy:
+        content: "{{ show_run.stdout[0] }}"
+        dest: "CONFIG/{{ inventory_hostname }}.txt"
