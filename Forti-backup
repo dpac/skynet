@@ -1,0 +1,62 @@
+---
+- name: FortiOS Firewall Settings
+  hosts: DC
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - command: date +%Y%m%d
+      register: timestamp
+    - name: Backup VDOM1
+      fortios_config:
+        host: 192.168.52.100
+        username: admin
+        password: Cisco@123
+        vdom: VDOM1
+        backup: yes
+        backup_filename: "{{inventory_hostname}}_OSX-MOB_{{ timestamp.stdout }}.txt"
+        backup_path: /home/DC081072/scripts/forti_backup/
+    - name: Backup VDOM2
+      fortios_config:
+        host: 192.168.52.100
+        username: admin
+        password: Cisco@123
+        vdom: VDOM2
+        backup: yes
+        backup_filename: "{{inventory_hostname}}_DC-MOB_{{ timestamp.stdout }}.txt"
+        backup_path: /home/DC081072/scripts/forti_backup/
+    - name: VDOM3
+      fortios_config:
+        host: 192.168.52.100
+        username: admin
+        password: Cisco@123
+        vdom: VDOM3
+        backup: yes
+        backup_filename: "{{inventory_hostname}}_NPE-MOB_{{ timestamp.stdout }}.txt"
+        backup_path: /home/DC081072/scripts/forti_backup/
+    - name: Backup global
+      fortios_config:
+        host: 192.168.52.100
+        username: admin
+        password: Cisco@123
+        vdom: root
+        backup: yes
+        backup_filename: "{{inventory_hostname}}_root_{{ timestamp.stdout }}.txt"
+        backup_path: /home/DC081072/scripts/forti_backup/
+
+- name: FortiOS Firewall Settings
+  hosts: corp
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - command: date +%Y%m%d
+      register: timestamp
+    - name: Backup current config
+      fortios_config:
+        host: 10.10.10.10
+        username: admin 
+        password: Cisco@123
+        backup: yes
+        backup_filename: "{{inventory_hostname}}_{{ timestamp.stdout }}.txt"
+        backup_path: /home/DC081072/scripts/forti_backup/
