@@ -1,0 +1,3 @@
+show ip cef summary
+show ip cef exact-route <source address> <destination-address>
+show ip cef 4.2.2.2 detail
