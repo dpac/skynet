@@ -10,3 +10,7 @@ index="vha_ipnetworks" host="Firewall name" SOURCE=* AND DESTINATION=10.45.160.*
 
 TIME STAMPS eval
 | eval time=strftime(_time, "%H:%M")
+
+IQUERY DOWN 
+index="vha_ipnetworks" host="glbnnp241-osbi" Sev=alert Message=*10.52.128.69* 
+| eval time=strftime(_time, "%D %H:%M %p") | table time host Message
