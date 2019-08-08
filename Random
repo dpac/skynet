@@ -4,3 +4,6 @@ show ip cef 4.2.2.2 detail
 
 Splunk
 index="vha_ipnetworks"  host="asa" Message "10.246.232.35" AND "10.45.2.118(8080)" | timechart span=5m count
+
+index="vha_ipnetworks" host="Firewall name" SOURCE=* AND DESTINATION=10.45.160.* AND SERVICE=636 Message=*permit*
+| table _time SOURCE DESTINATION SERVICE
