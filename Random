@@ -7,3 +7,6 @@ index="vha_ipnetworks"  host="asa" Message "10.246.232.35" AND "10.45.2.118(8080
 
 index="vha_ipnetworks" host="Firewall name" SOURCE=* AND DESTINATION=10.45.160.* AND SERVICE=636 Message=*permit*
 | table _time SOURCE DESTINATION SERVICE
+
+TIME STAMPS eval
+| eval time=strftime(_time, "%H:%M")
