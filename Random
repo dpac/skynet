@@ -1,3 +1,6 @@
 show ip cef summary
 show ip cef exact-route <source address> <destination-address>
 show ip cef 4.2.2.2 detail
+
+Splunk
+index="vha_ipnetworks"  host="asa" Message "10.246.232.35" AND "10.45.2.118(8080)" | timechart span=5m count
