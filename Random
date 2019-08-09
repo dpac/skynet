@@ -14,3 +14,7 @@ TIME STAMPS eval
 IQUERY DOWN 
 index="vha_ipnetworks" host="glbnnp241-osbi" Sev=alert Message=*10.52.128.69* 
 | eval time=strftime(_time, "%D %H:%M %p") | table time host Message
+
+FIREWALL TRAFFIC
+index="vha_ipnetworks" host="fwleks201" SOURCE=* AND DESTINATION=10.45.80.* AND SERVICE=* AND ACTION=* 
+| eval time=strftime(_time, "%d %b %H:%M %p") | table time SOURCE DESTINATION SERVICE ACTION
