@@ -1,0 +1,1 @@
+echo | openssl s_client -connect aws.vodafone.com:443 2>&1 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' 2>&1 | openssl x509 -dates -noout
